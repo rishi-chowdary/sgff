@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Channel Reporter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px;
+    }
+
+    .container {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      padding: 30px;
+      width: 350px;
+      text-align: center;
+    }
+
+    input[type="text"] {
+      width: 90%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      background-color: #cc0000;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      margin-right: 5px;
+    }
+
+    button:hover {
+      background-color: #a80000;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    select, textarea {
+      width: 100%;
+      margin-top: 10px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .message {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+
+    .counter {
+      margin-top: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>YouTube Channel Reporter</h2>
+  <input type="text" id="channelUrl" placeholder="Enter YouTube Channel URL" />
+  <button onclick="showReportForm()">Report Channel</button>
+
+  <div id="reportForm" class="hidden">
+    <h3>Choose a Reason</h3>
+    <select id="reason">
+      <option>Spam or misleading</option>
+      <option>Hate speech</option>
+      <option>Harassment</option>
+      <option>Inappropriate content</option>
+      <option>Impersonation</option>
+    </select>
+    <textarea id="details" placeholder="Add some more details..." rows="3"></textarea>
+    <div class="counter">Reports Sent: <span id="reportCount">0</span></div>
+    <button onclick="submitFakeReport()">Submit Once</button>
+    <button onclick="startAutoReport()">Start Auto Report</button>
+    <button onclick="stopAutoReport()">Stop</button>
+    <div class="message" id="message"></div>
+  </div>
+</div>
+
+<script>
+  let reportCount = 0;
+  let autoReportInterval = null;
+
+  function showReportForm() {
+    const url = document.getElementById('channelUrl').value;
+    if (!url.includes('youtube.com')) {
+      alert("Please enter a valid YouTube channel URL!");
+      return;
+    }
+    document.getElementById('reportForm').classList.remove('hidden');
+  }
+
+  function submitFakeReport() {
+    reportCount++;
+    document.getElementById('reportCount').innerText = reportCount;
+    const reason = document.getElementById('reason').value;
+    const message = document.getElementById('message');
+    message.innerText = `report #${reportCount} submitted for "${reason}"!`;
+  }
+
+  function startAutoReport() {
+    if (autoReportInterval) return; // prevent multiple intervals
+    autoReportInterval = setInterval(() => {
+      submitFakeReport();
+    }, 500); // Adjust speed here
+  }
+
+  function stopAutoReport() {
+    clearInterval(autoReportInterval);
+    autoReportInterval = null;
+    document.getElementById('message').innerText = '⏹️ Auto reporting stopped.';
+  }
+</script>
+
+</body>
+</html>
